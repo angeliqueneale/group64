@@ -1,0 +1,32 @@
+
+body {
+    background-color: #f8f9fa;
+}
+.booking-card {
+    margin-bottom: 20px;
+    border-left: 4px solid #0de1fd; /* Matches primary color */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+.booking-card:hover {
+    transform: scale(1.02);
+}
+.booking-date {
+    font-weight: bold;
+    color: #6c757d;
+}
+.event-name {
+    font-size: 1.2rem;
+    color: #495057;
+}
+.btn-view-details {
+    background-color: #0de1fd;
+    border: none;
+}
+.btn-view-details:hover {
+    background-color: #0056b3;
+}
+.footer-custom {
+    color: white;
+    padding: 15px 0;
+}

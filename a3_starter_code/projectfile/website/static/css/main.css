@@ -1,0 +1,78 @@
+/* main.css */
+
+/* Body Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Jumbotron (Hero Section) */
+.jumbotron {
+    background: url('../img/hero.jpg') no-repeat center center;
+    background-size: cover;
+    color: white;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Navigation Bar */
+.navbar-brand {
+    font-weight: bold;
+}
+
+/* Card Hover Effect */
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+/* Footer Styling */
+footer {
+    margin-top: 40px;
+}
+
+/* Form Styling */
+form label {
+    font-weight: bold;
+}
+
+ .comments-section {
+            margin: 40px;
+        }
+.comment {
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-left: 4px solid #28a745;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+.comment-author {
+    font-weight: bold;
+    color: #343a40;
+}
+.comment-date {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+.comment-text {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #495057;
+}
+.add-comment-form textarea {
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 576px) {
+    .jumbotron {
+        height: 300px;
+    }
+}
