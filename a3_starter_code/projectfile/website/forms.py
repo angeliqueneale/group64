@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField
 from wtforms.validators import InputRequired, Length, Email, EqualTo
+from wtforms import DateTimeField, SelectField
+from flask_wtf.file import FileField, FileAllowed
 
 # creates the login information
 class LoginForm(FlaskForm):
@@ -19,3 +21,11 @@ class RegisterForm(FlaskForm):
 
     # submit button
     submit = SubmitField("Register")
+
+class EventForm(FlaskForm):
+    title = StringField('Title', validators=[InputRequired(), Length(max=100)])
+    description = TextAreaField('Description', validators=[InputRequired(), Length(max=500)])
+    date = StringField('Date', validators=[InputRequired()])
+    category = SelectField('Category', choices=[('music', 'Music'), ('art', 'Art'), ('technology', 'Technology'), ('sports', 'Sports')], validators=[InputRequired()])
+    image = FileField('Event Image', validators=[FileAllowed(['jpg', 'png'], 'Images only!')])
+    submit = SubmitField('Create Event')
