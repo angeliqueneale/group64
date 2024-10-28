@@ -31,73 +31,45 @@
         </div>
     </nav>
 
-    <!-- Event Details Section -->
-    <section class="container my-5">
-        <h2 class="text-center mb-4">Annual City Marathon</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <img src="static/img/marathon.jpg" class="img-fluid" alt="Marathon Event">
+    <h1>Events Details</h1>
+
+    {% if events %}
+        {% for event in events %}
+            <div class="event">
+                <h2>{{ event.name }}</h2>
+                <p><strong>Description:</strong> {{ event.description }}</p>
+                
+                
+                <img class="align-self-start mr-3" src="{{ event.image }}"> 
+                
+                
+                <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d') }}</p>
+                <p><strong>Time:</strong> {{ event.time.strftime('%H:%M') }}</p>
+                <p><strong>Venue:</strong> {{ event.venue }}</p>
             </div>
-            <div class="col-md-6">
-                <p><strong>Date:</strong> 15th October 2024</p>
-                <p><strong>Time:</strong> 8:00 AM - 2:00 PM</p>
-                <p><strong>Venue:</strong> Central Park, Nairobi</p>
-                <p><strong>Description:</strong> Join the annual marathon event, running through the beautiful streets of Nairobi.</p>
-                <span class="badge badge-success">Open</span>
+        {% endfor %}
+    {% else %}
+        <p>No events available at the moment.</p>
+    {% endif %}
 
-                <!-- Booking Form -->
-                <form class="mt-4">
-                    <div class="form-group">
-                        <label for="ticketQuantity">Select Ticket Quantity</label>
-                        <input type="number" id="ticketQuantity" class="form-control" min="1" max="10" required>
-                    </div>
-                    <button type="submit" class="btn btn-success">Book Now</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-     <!-- Comments Section -->
-        <div class="comments-section">
-            <h3>Comments</h3>
-
-            <!-- Comment 1 -->
-            <div class="comment">
-                <div class="comment-author">John Doe</div>
-                <div class="comment-date">Posted on 2023-08-01</div>
-                <div class="comment-text">
-                    I participated in this event last year, and it was absolutely amazing! The organization was perfect, and the course was challenging but fun. Can’t wait for this year’s race.
-                </div>
-            </div>
-
-            <!-- Comment 2 -->
-            <div class="comment">
-                <div class="comment-author">Sarah Johnson</div>
-                <div class="comment-date">Posted on 2023-08-10</div>
-                <div class="comment-text">
-                    Looking forward to it! The marathon has always been a great event. Hoping to beat my personal best this year. Anyone up for a challenge?
-                </div>
-            </div>
-
-            <!-- Comment 3 -->
-            <div class="comment">
-                <div class="comment-author">Michael Lee</div>
-                <div class="comment-date">Posted on 2023-08-15</div>
-                <div class="comment-text">
-                    First time running a marathon. I’m both excited and nervous. Does anyone have tips for beginners?
-                </div>
-            </div>
-
-            <!-- Add Comment Form -->
-            <form class="add-comment-form">
-                <div class="form-group">
-                    <label for="comment">Add your comment:</label>
-                    <textarea class="form-control" id="comment" rows="4" placeholder="Write your comment here..."></textarea>
-                </div>
-                <button type="submit" class="btn btn-success mt-3">Post Comment</button>
-            </form>
-        </div>
-    </div>
+    <!-- Comments -->  
+    <div class="row">  
+        <div class="col-md-12">  
+          <h2>Comments</h1>  
+        </div>  
+      </div>  
+   
+      <div class="row border-bottom"> 
+        {{ render_form(form,"/events/{0}/comment".format(event.id)) }}
+        
+        {% for comment in event.comments %}
+        <div class="col-md-12">  
+          <b>{{ comment.user.name }} </b>
+          <small>{{ comment.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+          <p>{{ comment.text }}</p>  
+        </div> 
+        {% endfor %} 
+      </div>  
 
     <!-- Footer -->
     <footer class="bg-success text-light py-4 text-center">

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management - Home</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Event Management</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavHome" aria-controls="navbarNavHome" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavHome">
+            <ul class="navbar-nav ml-auto">
+                {% if request.endpoint != 'main.home' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
+                </li>
+                {% endif %}
+                <li class="nav-item {% if request.endpoint == 'main.create_event' %}active{% endif %}">
+                    <a class="nav-link" href="{{ url_for('main.create_event') }}">Create Event</a>
+                </li>
+                <li class="nav-item {% if request.endpoint == 'main.booking_history' %}active{% endif %}">
+                    <a class="nav-link" href="{{ url_for('main.booking_history') }}">Booking History</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Browse by Category
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ url_for('main.event_category', category='music') }}">Music</a>
+                        <a class="dropdown-item" href="{{ url_for('main.event_category', category='sports') }}">Sports</a>
+                        <a class="dropdown-item" href="{{ url_for('main.event_category', category='art') }}">Art</a>
+                        <a class="dropdown-item" href="{{ url_for('main.event_category', category='technology') }}">Technology</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Banner Section -->
+    <section class="jumbotron text-center bg-light">
+        <div class="container">
+            <h1 class="display-4">Discover Amazing Events</h1>
+            <p class="lead">Explore a wide range of events across different categories. Find your next adventure!</p>
+            <!-- Centered Search Bar -->
+            <form class="form-inline justify-content-center mt-4" method="GET" action="{{ url_for('main.search') }}">
+                <input class="form-control mr-sm-2" type="search" name="query" placeholder="Search events" aria-label="Search">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Event Categories Section -->
+    <section class="container my-5">
+        <h2 class="text-center">Event Categories</h2>
+        <div class="row">
+            <!-- Music Events -->
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='img/music_events.jpg') }}" class="card-img-top event-img" alt="Music Events">
+                    <div class="card-body event-card-body">
+                        <h5 class="card-title">Music</h5>
+                        <p class="card-text">Concerts, artists, festivals, and more.</p>
+                        <a href="{{ url_for('main.event_category', category='music') }}" class="btn btn-primary">Explore</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Art Events -->
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='img/arts.jpg') }}" class="card-img-top event-img" alt="Art Events">
+                    <div class="card-body event-card-body">
+                        <h5 class="card-title">Art</h5>
+                        <p class="card-text">Exhibitions, workshops, and more.</p>
+                        <a href="{{ url_for('main.event_category', category='art') }}" class="btn btn-primary">Explore</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Technology Events -->
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='img/technology.jpg') }}" class="card-img-top event-img" alt="Technology Events">
+                    <div class="card-body event-card-body">
+                        <h5 class="card-title">Technology</h5>
+                        <p class="card-text">Conferences, hackathons, and more.</p>
+                        <a href="{{ url_for('main.event_category', category='technology') }}" class="btn btn-primary">Explore</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Sports Events -->
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='img/running.jpg') }}" class="card-img-top event-img" alt="Sports Events">
+                    <div class="card-body event-card-body">
+                        <h5 class="card-title">Sports</h5>
+                        <p class="card-text">Competitions, tournaments, and more.</p>
+                        <a href="{{ url_for('main.event_category', category='sports') }}" class="btn btn-primary">Explore</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-light py-4 text-center">
+        <p>© 2024 Event Management. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    {% if request.args.get('message') %}
+    <script>
+        showNotification("{{ request.args.get('message') }}");
+    </script>
+    {% endif %}
+</body>
+</html>

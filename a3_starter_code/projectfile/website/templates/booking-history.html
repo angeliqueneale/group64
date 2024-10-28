@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking History</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/booking.css') }}">
+    <style>
+        /* Ensure the footer is at the bottom */
+        html, body {
+            height: 100%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        .content {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.home') }}">Sports Event Management</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item {% if request.endpoint == 'main.home' %}active{% endif %}">
+                        <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
+                    </li>
+                    <li class="nav-item {% if request.endpoint == 'main.create_event' %}active{% endif %}">
+                        <a class="nav-link" href="{{ url_for('main.create_event') }}">Create Event</a>
+                    </li>
+                    <li class="nav-item {% if request.endpoint == 'main.booking_history' %}active{% endif %}">
+                        <a class="nav-link" href="{{ url_for('main.booking_history') }}">Booking History</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Booking History Section -->
+    <div class="container mt-5 content">
+        <h2 class="text-center mb-4">Your Booking History</h2>
+        <div class="row">
+            <!-- First Booking -->
+            <div class="col-md-6">
+                <div class="card booking-card p-3">
+                    <div class="card-body">
+                        <p class="booking-date">Booked on: 2023-09-01</p>
+                        <p class="event-name">Marathon 10K - City Run</p>
+                        <p>Location: Nairobi</p>
+                        <p>Date: 2023-09-15</p>
+                        <a href="#" class="btn btn-view-details">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Second Booking -->
+            <div class="col-md-6">
+                <div class="card booking-card p-3">
+                    <div class="card-body">
+                        <p class="booking-date">Booked on: 2023-08-15</p>
+                        <p class="event-name">Swimming Championship - National Level</p>
+                        <p>Location: Kisumu</p>
+                        <p>Date: 2023-08-25</p>
+                        <a href="#" class="btn btn-view-details">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Third Booking -->
+            <div class="col-md-6">
+                <div class="card booking-card p-3">
+                    <div class="card-body">
+                        <p class="booking-date">Booked on: 2023-07-20</p>
+                        <p class="event-name">Football - Regional Tournament</p>
+                        <p>Location: Mombasa</p>
+                        <p>Date: 2023-07-30</p>
+                        <a href="#" class="btn btn-view-details">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Fourth Booking -->
+            <div class="col-md-6">
+                <div class="card booking-card p-3">
+                    <div class="card-body">
+                        <p class="booking-date">Booked on: 2023-06-10</p>
+                        <p class="event-name">Cycling Race - Hillside Sprint</p>
+                        <p>Location: Eldoret</p>
+                        <p>Date: 2023-06-20</p>
+                        <a href="#" class="btn btn-view-details">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-light py-4 text-center">
+        <p>&copy; 2024 Event Management. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

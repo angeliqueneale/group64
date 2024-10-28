@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "bootstrap5/form.html" import render_form %}
+{% block content %}
+<section class="container my-5">
+    <h2 class="text-center mb-4">Create a New Event</h2>
+    <div class="col-md-6 mx-auto">
+        {{ render_form(form) }}
+    </div>
+    <!-- Back to Home Button -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('main.home') }}" class="btn btn-secondary">Back to Home</a>
+    </div>
+</section>
+
+<script>
+    $(function() {
+        $('#date').datepicker({
+            dateFormat: 'yy-mm-dd'  // Format the date as needed
+        });
+    });
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+        alert('Event created successfully!');
+    });
+</script>
+
+{% endblock %}
