@@ -52,6 +52,14 @@
         <p>No events available at the moment.</p>
     {% endif %}
 
+    {% if event.owner_id == current_user.id %}
+    <a href="{{ url_for('edit_event', event_id=event.id) }}">Edit Event</a>
+    <form action="{{ url_for('cancel_event', event_id=event.id) }}" method="POST">
+        <button type="submit" onclick="return confirm('Are you sure you want to cancel this event?');">
+            Cancel Event
+        </button>
+    </form>
+
     <!-- Comments -->  
     <div class="row">  
         <div class="col-md-12">  
