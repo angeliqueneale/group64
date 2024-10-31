@@ -1,0 +1,17 @@
+{# bootstrap5/form.html}
+{% macro render_form(form, **kwargs) %}
+    <form method="{{ form.method }}" action="{{ form.action }}" {{ kwargs|to_attr }}>
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id }}">{{ field.label }}</label>
+                {{ field(class="form-control") }} 
+                {% if field.errors %}
+                    <div class="invalid-feedback">
+                        {{ field.errors[0] }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+    </form>
+{% endmacro %}
