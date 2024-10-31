@@ -40,4 +40,9 @@ class EventForm(FlaskForm):
   time = TimeField('Event Time', format='%H:%M', validators=[InputRequired()])
   venue = StringField('Event Venue', validators=[InputRequired()])
   category = SelectField('Category', choices=[('music', 'Music'), ('art', 'Art'), ('technology', 'Technology'), ('sports', 'Sports')], validators=[InputRequired()])
+  status=SelectField('Status', choices=[('open', 'Open'), ('inactive', 'Inactive'), ('sold out', 'Sold Out'), ('cancelled', 'Cancelled')], validators=[InputRequired()])
   submit = SubmitField("Create")
+
+class EditEventStatusForm(FlaskForm):
+    status=SelectField('Status', choices=[('open', 'Open'), ('inactive', 'Inactive'), ('sold out', 'Sold Out'), ('cancelled', 'Cancelled')], validators=[InputRequired()])
+    submit = SubmitField('Update Name')
