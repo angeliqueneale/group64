@@ -7,9 +7,9 @@ from werkzeug.utils import secure_filename
 # additional import:
 from flask_login import login_required, current_user
 
-eventbp = Blueprint('event', __name__, url_prefix='/events')
+event_bp = Blueprint('event', __name__, url_prefix='/events')
 
-@eventbp.route('/<id>')
+@event_bp.route('/<id>')
 def show(id):
     event = db.session.scalar(db.select(Event).where(Event.id==id))
     form = CommentForm()
@@ -17,7 +17,7 @@ def show(id):
        abort(404)
     return render_template('event/show.html', event=event, form=form)
 
-@eventbp.route('/create', methods=['GET', 'POST'])
+@event_bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
   print('Method type: ', request.method)
@@ -44,7 +44,7 @@ def create():
     return redirect(url_for('event.show', id=event.id))
   return render_template('events/create.html', form=form)
 
-@eventbp.route('/<int:id>/edit', methods=['GET', 'POST'])
+@event_bp.route('/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_name(event_id):
     # Fetch the event and ensure the user is the owner
@@ -79,7 +79,7 @@ def check_upload_file(form):
   fp.save(upload_path)
   return db_upload_path
 
-@eventbp.route('/<id>/comment', methods=['GET', 'POST'])  
+@event_bp.route('/<id>/comment', methods=['GET', 'POST'])  
 @login_required
 def comment(id):  
     form = CommentForm()  
