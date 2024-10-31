@@ -2,7 +2,7 @@ from . import db
 from datetime import datetime
 from flask_login import UserMixin
 from sqlalchemy import Enum
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class Event(db.Model):
     __tablename__ = 'events'
