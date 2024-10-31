@@ -63,7 +63,7 @@ def edit_name(event_id):
         flash("Event status updated successfully", "success")
         return redirect(url_for('event.show', id=event_id))
     
-    return render_template('events/edit.html', form=form, event=event)
+    return render_template('edit.html', form=form, event=event)
 
 
 def check_upload_file(form):

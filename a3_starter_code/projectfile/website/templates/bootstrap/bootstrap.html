@@ -1,4 +1,4 @@
-{# bootstrap5/form.html}
+{# bootstrap/form.html}
 {% macro render_form(form, **kwargs) %}
     <form method="{{ form.method }}" action="{{ form.action }}" {{ kwargs|to_attr }}>
         {% for field in form %}
