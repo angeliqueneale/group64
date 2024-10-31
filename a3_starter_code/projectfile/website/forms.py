@@ -1,31 +1,9 @@
-<<<<<<< HEAD
 from flask_wtf import FlaskForm
-from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField
+from wtforms.fields import TextAreaField, SubmitField, StringField, DateField, TimeField, PasswordField,SelectField
 from wtforms.validators import InputRequired, Length, Email, EqualTo
+from flask_wtf.file import FileRequired, FileField, FileAllowed
 
-# creates the login information
-class LoginForm(FlaskForm):
-    user_name=StringField("User Name", validators=[InputRequired('Enter user name')])
-    password=PasswordField("Password", validators=[InputRequired('Enter user password')])
-    submit = SubmitField("Login")
-
- # this is the registration form
-class RegisterForm(FlaskForm):
-    user_name=StringField("User Name", validators=[InputRequired()])
-    email = StringField("Email Address", validators=[Email("Please enter a valid email")])
-    # linking two fields - password should be equal to data entered in confirm
-    password=PasswordField("Password", validators=[InputRequired(),
-                  EqualTo('confirm', message="Passwords should match")])
-    confirm = PasswordField("Confirm Password")
-
-    # submit button
-    submit = SubmitField("Register")
-=======
-from flask_wtf import FlaskForm
-from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField
-from wtforms.validators import InputRequired, Length, Email, EqualTo
-from wtforms import DateTimeField, SelectField
-from flask_wtf.file import FileField, FileAllowed
+ALLOWED_FILE = {'PNG', 'JPG', 'JPEG', 'png', 'jpg', 'jpeg'}
 
 # creates the login information
 class LoginForm(FlaskForm):
@@ -45,11 +23,21 @@ class RegisterForm(FlaskForm):
     # submit button
     submit = SubmitField("Register")
 
+#User comment
+class CommentForm(FlaskForm):
+  text = TextAreaField('Comment', [InputRequired()])
+  submit = SubmitField('Create')
+
+#Create event
 class EventForm(FlaskForm):
-    title = StringField('Title', validators=[InputRequired(), Length(max=100)])
-    description = TextAreaField('Description', validators=[InputRequired(), Length(max=500)])
-    date = StringField('Date', validators=[InputRequired()])
-    category = SelectField('Category', choices=[('music', 'Music'), ('art', 'Art'), ('technology', 'Technology'), ('sports', 'Sports')], validators=[InputRequired()])
-    image = FileField('Event Image', validators=[FileAllowed(['jpg', 'png'], 'Images only!')])
-    submit = SubmitField('Create Event')
->>>>>>> 039362d2f95af8646e0dbf2552367a5f9739de41
+  name = StringField('Event Name', validators=[InputRequired()])
+  description = TextAreaField('Event Description', 
+            validators=[InputRequired()])
+  image = FileField('Event Image', validators=[
+    FileRequired(message='Image cannot be empty'),
+    FileAllowed(ALLOWED_FILE, message='Only supports PNG, JPG, png, jpg')])
+  date = DateField('Event Date', format='%Y-%m-%d', validators=[InputRequired()])
+  time = TimeField('Event Time', format='%H:%M', validators=[InputRequired()])
+  venue = StringField('Event Venue', validators=[InputRequired()])
+  category = SelectField('Category', choices=[('music', 'Music'), ('art', 'Art'), ('technology', 'Technology'), ('sports', 'Sports')], validators=[InputRequired()])
+  submit = SubmitField("Create")
