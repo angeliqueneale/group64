@@ -1,12 +1,10 @@
 # import flask - from 'package' import 'Class'
 from flask import Flask 
-from flask_bootstrap import Bootstrap5
+from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_migrate import Migrate
 
 db = SQLAlchemy()
-migrate = Migrate()
 
 # create a function that creates a web application
 # a web server will run this web application
@@ -20,9 +18,8 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sitedata.sqlite'
     # initialise db with flask app
     db.init_app(app)
-    migrate.init_app(app, db)
 
-    Bootstrap5(app)
+    Bootstrap(app)
     
     # initialise the login manager
     login_manager = LoginManager()
@@ -44,5 +41,6 @@ def create_app():
 
     from . import auth
     app.register_blueprint(auth.auth_bp)
-    
+    from . import events
+    app.register_blueprint(events.event_bp)
     return app

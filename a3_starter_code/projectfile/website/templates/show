@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sports Event Management - Event Details</title>
+    <title>Event Management - Event Details</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -46,19 +46,16 @@
                 <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d') }}</p>
                 <p><strong>Time:</strong> {{ event.time.strftime('%H:%M') }}</p>
                 <p><strong>Venue:</strong> {{ event.venue }}</p>
+                <p><strong>States:</strong> {{ event.states}}</p>
             </div>
         {% endfor %}
     {% else %}
         <p>No events available at the moment.</p>
     {% endif %}
 
-    {% if event.owner_id == current_user.id %}
-    <a href="{{ url_for('edit_event', event_id=event.id) }}">Edit Event</a>
-    <form action="{{ url_for('cancel_event', event_id=event.id) }}" method="POST">
-        <button type="submit" onclick="return confirm('Are you sure you want to cancel this event?');">
-            Cancel Event
-        </button>
-    </form>
+    {% if current_user.id == event.owner_id %}
+        <a href="{{ url_for('event.edit_status', event_id=event.id) }}" class="btn btn-primary">Edit Status</a>
+    {% endif %}
 
     <!-- Comments -->  
     <div class="row">  
