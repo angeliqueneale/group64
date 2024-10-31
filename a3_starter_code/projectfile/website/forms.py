@@ -26,7 +26,7 @@ class RegisterForm(FlaskForm):
 #User comment
 class CommentForm(FlaskForm):
   text = TextAreaField('Comment', [InputRequired()])
-  submit = SubmitField('Create')
+  submit = SubmitField('Post')
 
 #Create event
 class EventForm(FlaskForm):
@@ -45,5 +45,5 @@ class EventForm(FlaskForm):
 
 class EditEventStatusForm(FlaskForm):
     status=SelectField('Status', choices=[('open', 'Open'), ('inactive', 'Inactive'), ('sold out', 'Sold Out'), ('cancelled', 'Cancelled')], validators=[InputRequired()])
-    submit = SubmitField('Update Name')
+    submit = SubmitField('Update ')
 

@@ -68,30 +68,48 @@
         </div>
     </section>
 
-<section class="container my-5">
-    <h2 class="text-center mb-4">Create a New Event</h2>
-    <div class="col-md-6 mx-auto">
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">  <!-- Adjust the column width as needed -->
+            <h1 class="text-center">Event Details</h1>
+
+            <div class="event mb-4">
+                <h2>{{ event.name }}</h2>
+                <img class="align-self-start mr-3" src="{{ url_for('static', filename=event.image) }}"> 
+                <p><strong>Description:</strong> {{ event.description }}</p>
+                <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d') }}</p>
+                <p><strong>Time:</strong> {{ event.time.strftime('%H:%M') }}</p>
+                <p><strong>Venue:</strong> {{ event.venue }}</p>
+                <p><strong>Status:</strong> {{ event.status }}</p>
+            </div>
+        
+   
+
+    {% if current_user.id == event.owner_id %}
+        <a href="{{ url_for('event.edit_status', id=event.id) }}" class="btn btn-primary">Edit Status</a>
+    {% endif %}
+
+    <!-- Comments -->
+
+
+<div class="row border-bottom"> 
+    <form action="{{ url_for('event.comment', id=event.id) }}" method="POST">
         {{ render_form(form) }}
-    </div>
-    <!-- Back to Home Button -->
-    <div class="text-center mt-4">
-        <a href="{{ url_for('main.home') }}" class="btn btn-secondary">Back to Home</a>
-    </div>
-</section>
+    </form>
+    
+    {% for comment in event.comments %}
+    <div class="col-md-12">  
+        <b><b>{{ comment.username}}</b> <span class="ml-2 text-muted">{{ comment.created_at.strftime('%Y-%m-%d %H:%M') }}</span></b>  
+        <p>{{ comment.text }}</p>  
+    </div> 
+    {% else %}
+        <div class="col-md-12">
+            <p>No comments yet.</p>
+        </div>
+    {% endfor %} 
+</div>
 
-<script>
-    $(function() {
-        $('#date').datepicker({
-            dateFormat: 'yy-mm-dd'  // Format the date as needed
-        });
-    });
-
-    document.querySelector('form').addEventListener('submit', function(event) {
-        alert('Event created successfully!');
-    });
-</script>
-
- <!-- Footer -->
+<!-- Footer -->
  <footer class="bg-primary text-light py-4 text-center">
     <p>© 2024 Event Management. All rights reserved.</p>
 </footer>

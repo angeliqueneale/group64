@@ -1,12 +1,12 @@
 {# templates/bootstrap/form.html #}
+{# templates/bootstrap/form.html #}
 {% macro render_form(form, action='', method='post', submit_text='Submit') %}
     <form method="{{ method }}" action="{{ action }}" enctype="multipart/form-data">
+ 
         {% for field in form %}
             <div class="form-group">
                 <label for="{{ field.id }}">{{ field.label }}</label>
                 {{ field(class="form-control", id=field.id) }}
-                
-                {# Show validation error if the field has one #}
                 {% if field.errors %}
                     <div class="invalid-feedback">
                         {{ field.errors[0] }}
@@ -14,6 +14,6 @@
                 {% endif %}
             </div>
         {% endfor %}
-        <button type="submit" class="btn btn-primary mt-3">{{ submit_text }}</button>
+        
     </form>
 {% endmacro %}

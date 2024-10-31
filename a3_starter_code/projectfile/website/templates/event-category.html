@@ -56,7 +56,8 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ event.name }}</h5>
                             <p class="card-text">{{ event.description }}</p>
-                            <a href="#" class="btn btn-primary">View Details</a>
+                            <a href="{{ url_for('event.show', id=event.id) }}" class="btn btn-primary">View Details</a>
+                            
                             <!-- Delete Button -->
                             <form action="{{ url_for('main.delete_event', event_id=event.id) }}" method="post" style="display:inline;" onsubmit="return confirmDelete();">
                                 <button type="submit" class="btn btn-danger">Delete</button>

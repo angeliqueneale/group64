@@ -15,7 +15,7 @@ def show(id):
     form = CommentForm()
     if not event:
        abort(404)
-    return render_template('event/show.html', event=event, form=form)
+    return render_template('show.html', event=event, form=form)
 
 @event_bp.route('/create', methods=['GET', 'POST'])
 @login_required
@@ -46,12 +46,12 @@ def create():
 
 @event_bp.route('/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
-def edit_name(event_id):
+def edit_status(id):
     # Fetch the event and ensure the user is the owner
-    event = Event.query.get_or_404(event_id)
+    event = Event.query.get_or_404(id)
     if event.owner_id != current_user.id:
         flash("You don't have permission to edit this event.")
-        return redirect(url_for('event.show', id=event_id))
+        return redirect(url_for('event.show', id=id))
     
     form =EditEventStatusForm(obj=event)  # Populate the form with the current name
     
@@ -61,7 +61,7 @@ def edit_name(event_id):
         db.session.commit()  # Save changes to the database
         
         flash("Event status updated successfully", "success")
-        return redirect(url_for('event.show', id=event_id))
+        return redirect(url_for('event.show', id=id))
     
     return render_template('edit.html', form=form, event=event)
 
@@ -72,9 +72,9 @@ def check_upload_file(form):
   filename = fp.filename
   BASE_PATH = os.path.dirname(__file__)
   # upload file location – directory of this file/static/image
-  upload_path = os.path.join(BASE_PATH, 'static/image', secure_filename(filename))
+  upload_path = os.path.join(BASE_PATH, 'static/img', secure_filename(filename))
   # store relative path in DB as image location in HTML is relative
-  db_upload_path = '/static/image/' + secure_filename(filename)
+  db_upload_path = '/static/img/' + secure_filename(filename)
   # save the file and return the db upload path
   fp.save(upload_path)
   return db_upload_path
@@ -87,7 +87,7 @@ def comment(id):
     event = db.session.scalar(db.select(Event).where(Event.id==id))
     if form.validate_on_submit():  
       # read the comment from the form
-      comment = Comment(text=form.text.data, event=event, user=current_user) 
+      comment = Comment(text=form.text.data, event=event) 
       db.session.add(comment) 
       db.session.commit() 
       # flashing a message which needs to be handled by the html

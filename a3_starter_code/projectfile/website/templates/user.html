@@ -1,6 +1,73 @@
-{% include "base.html" %}
 {% from "bootstrap/form.html" import render_form %}
-{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management - Home</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Event Management</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavHome" aria-controls="navbarNavHome" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavHome">
+            <ul class="navbar-nav ml-auto">
+                {% if request.endpoint != 'main.home' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
+                </li>
+                {% endif %}
+                <li class="nav-item {% if request.endpoint == 'main.create_event' %}active{% endif %}">
+                    <a class="nav-link" href="{{ url_for('event.create') }}">Create Event</a>
+                </li>
+                <li class="nav-item {% if request.endpoint == 'main.booking_history' %}active{% endif %}">
+                    <a class="nav-link" href="{{ url_for('main.booking_history') }}">Booking History</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Browse by Category
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ url_for('main.event_category', category='music') }}">Music</a>
+                        <a class="dropdown-item" href="{{ url_for('main.event_category', category='sports') }}">Sports</a>
+                        <a class="dropdown-item" href="{{ url_for('main.event_category', category='art') }}">Art</a>
+                        <a class="dropdown-item" href="{{ url_for('main.event_category', category='technology') }}">Technology</a>
+                    </div>
+                </li>
+               
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+                    </li>
+                    {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Banner Section -->
+    <section class="jumbotron text-center bg-light">
+        <div class="container">
+            <h1 class="display-4">Discover Amazing Events</h1>
+            <p class="lead">Explore a wide range of events across different categories. Find your next adventure!</p>
+            <!-- Centered Search Bar -->
+            <form class="form-inline justify-content-center mt-4" method="GET" action="{{ url_for('main.search') }}">
+                <input class="form-control mr-sm-2" type="search" name="query" placeholder="Search events" aria-label="Search">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </section>
+
 
 <div class="page-header">
     <h4>{{heading}}</h4>
@@ -18,4 +85,18 @@
 </div>
 {% endif %}
 
-{% endblock %}
+ <!-- Footer -->
+ <footer class="bg-primary text-light py-4 text-center">
+    <p>© 2024 Event Management. All rights reserved.</p>
+</footer>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+{% if request.args.get('message') %}
+<script>
+    showNotification("{{ request.args.get('message') }}");
+</script>
+{% endif %}
+</body>
+</html>
