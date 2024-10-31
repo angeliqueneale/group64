@@ -15,9 +15,9 @@ def login():
     login_form = LoginForm()
     error = None
     if login_form.validate_on_submit():
-        user_name = login_form.user_name.data
+        username = login_form.username.data
         password = login_form.password.data
-        user = db.session.scalar(db.select(User).where(User.name==user_name))
+        user = db.session.scalar(db.select(User).where(User.username==username))
         if user is None:
             error = 'Incorrect user name'
         elif not check_password_hash(user.password_hash, password): # takes the hash and cleartext password
@@ -26,7 +26,7 @@ def login():
             login_user(user)
             nextp = request.args.get('next') # this gives the url from where the login page was accessed
             print(nextp)
-            if next is None or not nextp.startswith('/'):
+            if nextp is None or not nextp.startswith('/'):
                 return redirect(url_for('main.home'))
             return redirect(nextp)
         else:
@@ -45,14 +45,18 @@ def register():
       uname =form.username.data
       pwd = form.password.data
       email=form.email.data
-      utype =form.usertype.data
       
       pwd_hash = generate_password_hash(pwd)
       #create a new user model object
-      new_user = User(name=uname, password_hash=pwd_hash, emailid=email, usertype=utype)
+      new_user = User(username=uname, password_hash=pwd_hash, email=email)
       db.session.add(new_user)
       db.session.commit()
       flash("Registered user successfully")
-      return redirect(url_for('auth.register'))
+      return redirect(url_for('auth.login'))
        
     return render_template('register.html', form=form, heading='Register')
+
+@auth_bp.route('/logout')
+def logout():
+  logout_user()
+  return render_template('logout.html')
