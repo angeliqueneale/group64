@@ -42,7 +42,7 @@ def create():
     flash('Successfully created new event', 'success')
     # redirect when form is valid
     return redirect(url_for('event.show', id=event.id))
-  return render_template('events/create.html', form=form)
+  return render_template('create.html', form=form)
 
 @event_bp.route('/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
