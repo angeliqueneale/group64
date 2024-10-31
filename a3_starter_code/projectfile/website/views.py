@@ -17,34 +17,6 @@ def event_category(category):
     events = Event.query.filter_by(category=category).all()
     return render_template('event-category.html', category=category, events=events)
 
-@main_bp.route('/create-event', methods=['GET', 'POST'])
-def create_event():
-    form = EventForm()
-    if form.validate_on_submit():
-        # Convert the date string to a datetime object
-        event_date = datetime.strptime(form.date.data, '%Y-%m-%d')
-
-        # Handle file upload
-        image_file = form.image.data
-        image_filename = None
-        if image_file:
-            image_filename = secure_filename(image_file.filename)
-            image_path = os.path.join(current_app.root_path, 'static/img', image_filename)
-            image_file.save(image_path)
-
-        new_event = Event(
-            title=form.title.data,
-            description=form.description.data,
-            date=event_date,
-            category=form.category.data,
-            status='Open',
-            image=image_filename
-        )
-        db.session.add(new_event)
-        db.session.commit()
-        return redirect(url_for('main.home', message='Event created successfully!'))
-    return render_template('create-event.html', form=form)
-
 @main_bp.route('/booking-history')
 def booking_history():
     return render_template('booking-history.html')

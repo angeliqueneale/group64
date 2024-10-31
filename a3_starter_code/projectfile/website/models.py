@@ -39,3 +39,23 @@ class Comment(db.Model):
     def __repr__(self):
         return f"Comment: {self.text}"
 
+class User(db.Model, UserMixin):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_name = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+
+
+    # Method to set password hash
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    # Method to check password
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    # Representation method for debugging
+    def __repr__(self):
+        return f'<User {self.username}>'
