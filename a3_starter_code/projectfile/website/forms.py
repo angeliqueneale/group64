@@ -46,3 +46,4 @@ class EventForm(FlaskForm):
 class EditEventStatusForm(FlaskForm):
     status=SelectField('Status', choices=[('open', 'Open'), ('inactive', 'Inactive'), ('sold out', 'Sold Out'), ('cancelled', 'Cancelled')], validators=[InputRequired()])
     submit = SubmitField('Update Name')
+

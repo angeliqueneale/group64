@@ -1,0 +1,19 @@
+{% include "base.html" %}
+{% from "bootstrap/form.html" import render_form %}
+{% block body %}
+
+<div class="page-header">
+    <h4>{{heading}}</h4>
+</div>
+
+<!-- Form rendering is simple and easy if using WTForms and Bootstrap -->
+<div class="col-md-6">
+    {{render_form(form)}}
+</div>
+
+<div class="col-md-4">
+    <p>Already have a account? <a href="{{url_for('auth.login')}}">Login</a> to register.</p>
+</div>
+
+
+{% endblock %}
