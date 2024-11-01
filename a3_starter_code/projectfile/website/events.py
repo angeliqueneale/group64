@@ -95,3 +95,14 @@ def comment(id):
       # print('Your comment has been added', 'success') 
     # using redirect sends a GET request to destination.show
     return redirect(url_for('event.show', id=id))
+
+@event_bp.route('/book-event', methods=['GET', 'POST'])
+@login_required
+def book_event():
+    form = EventForm()
+    if form.validate_on_submit():
+        # Process form data here, e.g., save the event details in the database
+        flash('Event booked successfully!', 'success')
+        return redirect(url_for('main.booking_history'))  # Redirect to the booking history page or another page
+
+    return render_template('book.html', form=form)

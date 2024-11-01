@@ -37,6 +37,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('event.create') }}">Create Event</a>
                 </li>
+                <li class="nav-item {% if request.endpoint == 'main.book_event' %}active{% endif %}">
+                    <a class="nav-link" href="{{ url_for('event.book_event') }}">Book Event</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.booking_history') }}">Booking History</a>
                 </li>
