@@ -33,7 +33,7 @@
                     <a class="nav-link" href="{{ url_for('event.my_events') }}">My Events</a>
                 </li>
                 <li class="nav-item {% if request.endpoint == 'main.booking_history' %}active{% endif %}">
-                    <a class="nav-link" href="{{ url_for('main.booking_history') }}">Booking History</a>
+                    <a class="nav-link" href="{{ url_for('event.booking_history') }}">Booking History</a>
                 </li>
                 {% endif %}
 
@@ -66,19 +66,25 @@
     <main class="container my-5 flex-grow-1">
         <h2 class="text-center mb-4">My Events</h2>
         <div class="row">
-            {% for event in events %}
-                <div class="col-md-3 mb-4">
-                    <div class="card">
-                        <!-- Use a default image if event.image is not available -->
-                        <img src="{{ url_for('static', filename=event.image) }}" class="card-img-top" style="width: 300px; height: 200px" alt="{{ event.name }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ event.name }}</h5>
-                            <p class="card-text">{{ event.description }}</p>
-                            <a href="{{ url_for('event.show', id=event.id) }}" class="btn btn-primary">View Details</a>
+            {% if events %}
+                {% for event in events %}
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <!-- Use a default image if event.image is not available -->
+                            <img src="{{ url_for('static', filename=event.image) }}" class="card-img-top" style="width: 300x; height: 200px" alt="{{ event.name }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ event.name }}</h5>
+                                <p class="card-text">{{ event.description }}</p>
+                                <a href="{{ url_for('event.show', id=event.id) }}" class="btn btn-primary">View Details</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+            <div class="col-12 text-center">
+                <p>No events are created</p>
+            </div>
+        {% endif %}
         </div>
     </main>
 

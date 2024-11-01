@@ -36,6 +36,7 @@ class EventForm(FlaskForm):
   image = FileField('Event Image', validators=[
     FileRequired(message='Image cannot be empty'),
     FileAllowed(ALLOWED_FILE, message='Only supports PNG, JPG, png, jpg')])
+  price=StringField('Event Price $', validators=[InputRequired()])
   date = DateField('Event Date', format='%Y-%m-%d', validators=[InputRequired()])
   time = TimeField('Event Time', format='%H:%M', validators=[InputRequired()])
   venue = StringField('Event Venue', validators=[InputRequired()])

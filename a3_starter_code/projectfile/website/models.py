@@ -17,6 +17,7 @@ class Event(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     status = db.Column(db.String(20), nullable=False, default="Open")
     owner = db.relationship('User', backref=db.backref('events', lazy=True))
+    price=db.Column(db.Integer, nullable=False)
     comments = db.relationship('Comment', backref='event')
     capacity = db.Column(db.Integer, nullable=False, default=100)
     category = db.Column(Enum('music', 'art', 'technology', 'sports', name='event_category'), nullable=False)
@@ -66,9 +67,12 @@ class Booking(db.Model):
     __tablename__ = 'bookings'
     
     id = db.Column(db.Integer, primary_key=True)
-    number_of_tickets = db.Column(db.Integer, nullable=False)
+    number_of_tickets = db.Column(db.Integer, nullable=False) #quanity
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
+    booking_date = db.Column(db.DateTime, default=datetime.utcnow)  # Date of booking
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Timestamp of when the booking was created
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)  # Timestamp of the last update
     user = db.relationship('User', backref='bookings')
     event = db.relationship('Event', backref='bookings')
     name = db.Column(db.String(100))

@@ -31,6 +31,7 @@ def create():
        image=db_file_path,
        date=form.date.data,
        time=form.time.data,
+       price=form.price.data,
        venue=form.venue.data,
        category=form.category.data,
        status=form.status.data,
@@ -40,7 +41,7 @@ def create():
     db.session.add(event)
     # commit to the database
     db.session.commit()
-    flash('Successfully created new event', 'success')
+    
     # redirect when form is valid
     return redirect(url_for('event.show', id=event.id))
   return render_template('create.html', form=form)
@@ -51,7 +52,7 @@ def edit_status(id):
     # Fetch the event and ensure the user is the owner
     event = Event.query.get_or_404(id)
     if event.owner_id != current_user.id:
-        flash("You don't have permission to edit this event.")
+        
         return redirect(url_for('event.show', id=id))
     
     form =EditEventStatusForm(obj=event)  # Populate the form with the current name
@@ -61,7 +62,7 @@ def edit_status(id):
         event.status = form.status.data
         db.session.commit()  # Save changes to the database
         
-        flash("Event status updated successfully", "success")
+        
         return redirect(url_for('event.show', id=id))
     
     return render_template('edit.html', form=form, event=event)

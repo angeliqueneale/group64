@@ -45,13 +45,17 @@ def register():
       uname =form.username.data
       pwd = form.password.data
       email=form.email.data
-      
+      existing_user = User.query.filter_by(username=uname).first()
+      if existing_user:
+        flash('Username already exists. Please choose a different one.', 'danger')
+        return render_template('register.html', form=form)  # Render the registration template with the form
+
       pwd_hash = generate_password_hash(pwd)
       #create a new user model object
       new_user = User(username=uname, password_hash=pwd_hash, email=email)
       db.session.add(new_user)
       db.session.commit()
-      flash("Registered user successfully")
+     
       return redirect(url_for('auth.login'))
        
     return render_template('register.html', form=form, heading='Register')
