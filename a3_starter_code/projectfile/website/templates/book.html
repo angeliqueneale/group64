@@ -67,8 +67,7 @@
         </div>
     </nav>
 
-{% block content %}
-<div class="container">
+    <section class="container my-5">
             <h1 class="text-center mb-4">Book Tickets  </h1>
             <div class="col-md-6 mx-auto">
                 {{ render_form(form) }}
@@ -80,96 +79,18 @@
         </section>
 
 
-<script>
-    function populateEventDropdown() {
-        const eventDetails = {
-            'Music': {
-                'Jazz Festival': { date: '2024-11-10', time: '18:00', location: 'City Hall', availableTickets: 200 },
-                'Rock Concert': { date: '2024-11-15', time: '20:00', location: 'Arena Centre', availableTickets: 150 }
-            },
-            'Art': {
-                'Modern Art Exhibition': { date: '2024-12-01', time: '10:00', location: 'Art Museum', availableTickets: 100 },
-                'Photography Workshop': { date: '2024-11-20', time: '15:00', location: 'Downtown Studio', availableTickets: 50 }
-            },
-            'Technology': {
-                'AI Conference': { date: '2024-12-05', time: '09:00', location: 'Tech Park', availableTickets: 300 },
-                'Blockchain Seminar': { date: '2024-12-12', time: '14:00', location: 'Innovation Hub', availableTickets: 120 }
-            },
-            'Sports': {
-                'City Marathon': { date: '2024-10-15', time: '08:00', location: 'City Stadium', availableTickets: 100 },
-                'Cycling Tour': { date: '2024-10-22', time: '06:00', location: 'Anzac Park', availableTickets: 80 }
-            }
-        };
+    <!-- Footer -->
+    <footer class="bg-primary text-light py-4 text-center">
+        <p>© 2024 Event Management. All rights reserved.</p>
+    </footer>
 
-        const eventSelect = document.getElementById('event-name');
-        eventSelect.innerHTML = '';
-
-        for (let category in eventDetails) {
-            const optGroup = document.createElement('optgroup');
-            optGroup.label = category;
-
-            for (let eventName in eventDetails[category]) {
-                const option = document.createElement('option');
-                option.value = `${category}-${eventName}`;
-                option.textContent = eventName;
-                optGroup.appendChild(option);
-            }
-
-            eventSelect.appendChild(optGroup);
-        }
-
-        autofillEventDetails(eventDetails);
-    }
-
-    function autofillEventDetails(eventDetails) {
-        const selectedEventKey = document.getElementById('event-name').value;
-        const [category, eventName] = selectedEventKey.split('-');
-        const eventDetail = eventDetails[category][eventName];
-
-        document.getElementById('event-date').value = eventDetail.date;
-        document.getElementById('event-time').value = eventDetail.time;
-        document.getElementById('event-location').value = eventDetail.location;
-        document.getElementById('available-tickets').innerText = eventDetail.availableTickets;
-    }
-
-    window.onload = function() {
-        populateEventDropdown();
-        document.getElementById('event-name').addEventListener('change', () => autofillEventDetails({
-            'Music': {
-                'Jazz Festival': { date: '2024-11-10', time: '18:00', location: 'City Hall', availableTickets: 200 },
-                'Rock Concert': { date: '2024-11-15', time: '20:00', location: 'Arena Centre', availableTickets: 150 }
-            },
-            'Art': {
-                'Modern Art Exhibition': { date: '2024-12-01', time: '10:00', location: 'Art Museum', availableTickets: 100 },
-                'Photography Workshop': { date: '2024-11-20', time: '15:00', location: 'Downtown Studio', availableTickets: 50 }
-            },
-            'Technology': {
-                'AI Conference': { date: '2024-12-05', time: '09:00', location: 'Tech Park', availableTickets: 300 },
-                'Blockchain Seminar': { date: '2024-12-12', time: '14:00', location: 'Innovation Hub', availableTickets: 120 }
-            },
-            'Sports': {
-                'City Marathon': { date: '2024-10-15', time: '08:00', location: 'City Stadium', availableTickets: 100 },
-                'Cycling Tour': { date: '2024-10-22', time: '06:00', location: 'Anzac Park', availableTickets: 80 }
-            }
-        }));
-    }
-</script>
-<footer class="bg-primary text-light py-4 text-center">
-    <p>© 2024 Event Management. All rights reserved.</p>
-</footer>
-
-<script>
-    document.querySelector('form').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevents the default form submission
-        alert('Booking successful!'); // Shows the success message
-
-        // Redirect to the homepage after the alert
-        window.location.href = '/';
-    });
-</script>
-
- <!-- Bootstrap JS and dependencies -->
- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-{% endblock %}
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    {% if request.args.get('message') %}
+    <script>
+        showNotification("{{ request.args.get('message') }}");
+    </script>
+    {% endif %}
+</body>
+</html>
