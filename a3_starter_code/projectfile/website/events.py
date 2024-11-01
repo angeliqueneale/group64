@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
 from .models import Event, Comment
 from .forms import EditEventStatusForm, EventForm, CommentForm
+from flask_login import login_required, current_user
 from . import db
 import os
 from werkzeug.utils import secure_filename
@@ -91,8 +92,25 @@ def comment(id):
       comment = Comment(text=form.text.data, event=event) 
       db.session.add(comment) 
       db.session.commit() 
-      # flashing a message which needs to be handled by the html
-      flash('Your comment has been added', 'success')  
-      # print('Your comment has been added', 'success') 
     # using redirect sends a GET request to destination.show
     return redirect(url_for('event.show', id=id))
+
+@event_bp.route('/book-event', methods=['GET', 'POST'])
+@login_required
+def book_event():
+    form = EventForm()
+    if form.validate_on_submit():
+        # Process form data here, e.g., save the event details in the database
+        flash('Event booked successfully!', 'success')
+        return redirect(url_for('main.booking_history'))  # Redirect to the booking history page or another page
+
+    return render_template('book.html', form=form)
+
+@event_bp.route('/my_event', methods=['GET', 'POST'])
+@login_required
+def my_events():
+    # Query events created by the current user
+    user_events = Event.query.filter_by(owner_id=current_user.id).all()
+
+    # Pass these events to a template for rendering
+    return render_template('my_events.html', events=user_events)

@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block header %}
+   
+<header>
+    <h1>Book Your Event</h1>
+</header>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container" style="max-width: 600px; margin: 0 auto; text-align: center;">
+    <h2>Event Details</h2>
+    <div class="event-info" style="display: flex; flex-direction: column; align-items: center;">
+        <div style="width: 100%;">
+            <label for="event-name">Event Name</label>
+            <select id="event-name" name="event-name" required style="width: 100%; padding: 10px;">
+            </select>
+        </div>
+        <div style="width: 100%; margin-top: 10px;">
+            <label for="event-date">Date</label>
+            <input type="date" id="event-date" name="event-date" readonly style="width: 100%; padding: 10px;">
+        </div>
+    </div>
+    <div class="event-info" style="display: flex; flex-direction: column; align-items: center; margin-top: 10px;">
+        <div style="width: 100%;">
+            <label for="event-time">Time</label>
+            <input type="time" id="event-time" name="event-time" readonly style="width: 100%; padding: 10px;">
+        </div>
+        <div style="width: 100%; margin-top: 10px;">
+            <label for="event-location">Location</label>
+            <input type="text" id="event-location" name="event-location" readonly style="width: 100%; padding: 10px;">
+        </div>
+    </div>
+
+    <h2 style="margin-top: 20px;">Book Your Spot</h2>
+    <form method="post" style="display: flex; flex-direction: column; align-items: center;">
+        <div style="width: 100%; margin-top: 10px;">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" pattern="[A-Za-z\s]+" title="Name can only contain letters and spaces" required style="width: 100%; padding: 10px;">
+        </div>
+        <div style="width: 100%; margin-top: 10px;">
+            <label for="email">Your Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Email must contain @domain" required style="width: 100%; padding: 10px;">
+        </div>
+        <div style="width: 100%; margin-top: 10px;">
+            <label for="mobile">Mobile Number</label>
+            <input type="tel" id="mobile" name="mobile" placeholder="Enter your 10-digit mobile number" pattern="\d{10}" title="Mobile number must be exactly 10 digits" required style="width: 100%; padding: 10px;">
+        </div>
+        <div style="width: 100%; margin-top: 10px;">
+            <label for="number-of-tickets">Number of Tickets</label>
+            <select id="number-of-tickets" name="number-of-tickets" required style="width: 100%; padding: 10px;">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <div style="width: 100%; margin-top: 10px;">
+            <label for="available-tickets">Tickets Available: </label>
+            <span id="available-tickets" style="display: block; padding: 10px; text-align: left;"></span>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" style="padding: 10px 20px; background-color: #007BFF; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Book Now</button>
+            <a href="/" style="padding: 10px 20px; background-color: #6c757d; color: #fff; border-radius: 5px; text-decoration: none; display: inline-block;">Go Home</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    function populateEventDropdown() {
+        const eventDetails = {
+            'Music': {
+                'Jazz Festival': { date: '2024-11-10', time: '18:00', location: 'City Hall', availableTickets: 200 },
+                'Rock Concert': { date: '2024-11-15', time: '20:00', location: 'Arena Centre', availableTickets: 150 }
+            },
+            'Art': {
+                'Modern Art Exhibition': { date: '2024-12-01', time: '10:00', location: 'Art Museum', availableTickets: 100 },
+                'Photography Workshop': { date: '2024-11-20', time: '15:00', location: 'Downtown Studio', availableTickets: 50 }
+            },
+            'Technology': {
+                'AI Conference': { date: '2024-12-05', time: '09:00', location: 'Tech Park', availableTickets: 300 },
+                'Blockchain Seminar': { date: '2024-12-12', time: '14:00', location: 'Innovation Hub', availableTickets: 120 }
+            },
+            'Sports': {
+                'City Marathon': { date: '2024-10-15', time: '08:00', location: 'City Stadium', availableTickets: 100 },
+                'Cycling Tour': { date: '2024-10-22', time: '06:00', location: 'Anzac Park', availableTickets: 80 }
+            }
+        };
+
+        const eventSelect = document.getElementById('event-name');
+        eventSelect.innerHTML = '';
+
+        for (let category in eventDetails) {
+            const optGroup = document.createElement('optgroup');
+            optGroup.label = category;
+
+            for (let eventName in eventDetails[category]) {
+                const option = document.createElement('option');
+                option.value = `${category}-${eventName}`;
+                option.textContent = eventName;
+                optGroup.appendChild(option);
+            }
+
+            eventSelect.appendChild(optGroup);
+        }
+
+        autofillEventDetails(eventDetails);
+    }
+
+    function autofillEventDetails(eventDetails) {
+        const selectedEventKey = document.getElementById('event-name').value;
+        const [category, eventName] = selectedEventKey.split('-');
+        const eventDetail = eventDetails[category][eventName];
+
+        document.getElementById('event-date').value = eventDetail.date;
+        document.getElementById('event-time').value = eventDetail.time;
+        document.getElementById('event-location').value = eventDetail.location;
+        document.getElementById('available-tickets').innerText = eventDetail.availableTickets;
+    }
+
+    window.onload = function() {
+        populateEventDropdown();
+        document.getElementById('event-name').addEventListener('change', () => autofillEventDetails({
+            'Music': {
+                'Jazz Festival': { date: '2024-11-10', time: '18:00', location: 'City Hall', availableTickets: 200 },
+                'Rock Concert': { date: '2024-11-15', time: '20:00', location: 'Arena Centre', availableTickets: 150 }
+            },
+            'Art': {
+                'Modern Art Exhibition': { date: '2024-12-01', time: '10:00', location: 'Art Museum', availableTickets: 100 },
+                'Photography Workshop': { date: '2024-11-20', time: '15:00', location: 'Downtown Studio', availableTickets: 50 }
+            },
+            'Technology': {
+                'AI Conference': { date: '2024-12-05', time: '09:00', location: 'Tech Park', availableTickets: 300 },
+                'Blockchain Seminar': { date: '2024-12-12', time: '14:00', location: 'Innovation Hub', availableTickets: 120 }
+            },
+            'Sports': {
+                'City Marathon': { date: '2024-10-15', time: '08:00', location: 'City Stadium', availableTickets: 100 },
+                'Cycling Tour': { date: '2024-10-22', time: '06:00', location: 'Anzac Park', availableTickets: 80 }
+            }
+        }));
+    }
+</script>
+<footer class="bg-primary text-light py-4 text-center">
+    <p>© 2024 Event Management. All rights reserved.</p>
+</footer>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevents the default form submission
+        alert('Booking successful!'); // Shows the success message
+
+        // Redirect to the homepage after the alert
+        window.location.href = '/';
+    });
+</script>
+
+ <!-- Bootstrap JS and dependencies -->
+ <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}
