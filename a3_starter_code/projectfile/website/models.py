@@ -60,4 +60,17 @@ class Comment(db.Model):
     # string print method
     def __repr__(self):
         return f"Comment: {self.text}"
+    
 
+class Booking(db.Model):
+    __tablename__ = 'bookings'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    number_of_tickets = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
+    user = db.relationship('User', backref='bookings')
+    event = db.relationship('Event', backref='bookings')
+    name = db.Column(db.String(100))
+    def __repr__(self):
+        return f'<Booking {self.id} - User: {self.user_id}, Event: {self.event_id}, Tickets: {self.number_of_tickets}>'

@@ -1,74 +1,84 @@
-{% extends "base.html" %}
+{% from "bootstrap/form.html" import render_form %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management - Home</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Event Management</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavHome" aria-controls="navbarNavHome" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavHome">
+            <ul class="navbar-nav ml-auto">
+                {% if request.endpoint != 'main.home' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
+                </li>
+                {% endif %}
+                
+                {% if current_user.is_authenticated %}
+                <li class="nav-item {% if request.endpoint == 'main.create_event' %}active{% endif %}">
+                    <a class="nav-link" href="{{ url_for('event.create') }}">Create Event</a>
+                </li>
 
-{% block header %}
-   
-<header>
-    <h1>Book Your Event</h1>
-</header>
-{% endblock %}
+
+                
+                <li class="nav-item {% if request.endpoint == 'main.book_event' %}active{% endif %}">
+                    <a class="nav-link" href="{{ url_for('event.my_events') }}">My Events</a></a>
+                </li>
+                
+                
+                <li class="nav-item {% if request.endpoint == 'main.booking_history' %}active{% endif %}">
+                    <a class="nav-link" href="{{ url_for('main.booking_history') }}">Booking History</a>
+                </li>
+                {% endif %}
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Browse by Category
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ url_for('main.event_category', category='music') }}">Music</a>
+                        <a class="dropdown-item" href="{{ url_for('main.event_category', category='sports') }}">Sports</a>
+                        <a class="dropdown-item" href="{{ url_for('main.event_category', category='art') }}">Art</a>
+                        <a class="dropdown-item" href="{{ url_for('main.event_category', category='technology') }}">Technology</a>
+                    </div>
+                </li>
+               
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+                    </li>
+                    {% endif %}
+            </ul>
+        </div>
+    </nav>
 
 {% block content %}
+<div class="container">
+            <h1 class="text-center mb-4">Book Tickets  </h1>
+            <div class="col-md-6 mx-auto">
+                {{ render_form(form) }}
+            </div>
+            <!-- Back to Home Button -->
+            <div class="text-center mt-4">
+                <a href="{{ url_for('main.home') }}" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </section>
 
-
-<div class="container" style="max-width: 600px; margin: 0 auto; text-align: center;">
-    <h2>Event Details</h2>
-    <div class="event-info" style="display: flex; flex-direction: column; align-items: center;">
-        <div style="width: 100%;">
-            <label for="event-name">Event Name</label>
-            <select id="event-name" name="event-name" required style="width: 100%; padding: 10px;">
-            </select>
-        </div>
-        <div style="width: 100%; margin-top: 10px;">
-            <label for="event-date">Date</label>
-            <input type="date" id="event-date" name="event-date" readonly style="width: 100%; padding: 10px;">
-        </div>
-    </div>
-    <div class="event-info" style="display: flex; flex-direction: column; align-items: center; margin-top: 10px;">
-        <div style="width: 100%;">
-            <label for="event-time">Time</label>
-            <input type="time" id="event-time" name="event-time" readonly style="width: 100%; padding: 10px;">
-        </div>
-        <div style="width: 100%; margin-top: 10px;">
-            <label for="event-location">Location</label>
-            <input type="text" id="event-location" name="event-location" readonly style="width: 100%; padding: 10px;">
-        </div>
-    </div>
-
-    <h2 style="margin-top: 20px;">Book Your Spot</h2>
-    <form method="post" style="display: flex; flex-direction: column; align-items: center;">
-        <div style="width: 100%; margin-top: 10px;">
-            <label for="name">Your Name</label>
-            <input type="text" id="name" name="name" placeholder="Enter your name" pattern="[A-Za-z\s]+" title="Name can only contain letters and spaces" required style="width: 100%; padding: 10px;">
-        </div>
-        <div style="width: 100%; margin-top: 10px;">
-            <label for="email">Your Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Email must contain @domain" required style="width: 100%; padding: 10px;">
-        </div>
-        <div style="width: 100%; margin-top: 10px;">
-            <label for="mobile">Mobile Number</label>
-            <input type="tel" id="mobile" name="mobile" placeholder="Enter your 10-digit mobile number" pattern="\d{10}" title="Mobile number must be exactly 10 digits" required style="width: 100%; padding: 10px;">
-        </div>
-        <div style="width: 100%; margin-top: 10px;">
-            <label for="number-of-tickets">Number of Tickets</label>
-            <select id="number-of-tickets" name="number-of-tickets" required style="width: 100%; padding: 10px;">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        </div>
-        <div style="width: 100%; margin-top: 10px;">
-            <label for="available-tickets">Tickets Available: </label>
-            <span id="available-tickets" style="display: block; padding: 10px; text-align: left;"></span>
-        </div>
-
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
-            <button type="submit" style="padding: 10px 20px; background-color: #007BFF; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Book Now</button>
-            <a href="/" style="padding: 10px 20px; background-color: #6c757d; color: #fff; border-radius: 5px; text-decoration: none; display: inline-block;">Go Home</a>
-        </div>
-    </form>
-</div>
 
 <script>
     function populateEventDropdown() {

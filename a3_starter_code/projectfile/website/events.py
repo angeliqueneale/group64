@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
-from .models import Event, Comment
-from .forms import EditEventStatusForm, EventForm, CommentForm
+from .models import Event, Comment,Booking
+from .forms import EditEventStatusForm, EventForm, CommentForm,BookingForm
 from flask_login import login_required, current_user
 from . import db
 import os
@@ -95,16 +95,22 @@ def comment(id):
     # using redirect sends a GET request to destination.show
     return redirect(url_for('event.show', id=id))
 
-@event_bp.route('/book-event', methods=['GET', 'POST'])
+@event_bp.route('/<int:event_id>/book', methods=['GET', 'POST'])
 @login_required
-def book_event():
-    form = EventForm()
+def book_event(event_id):
+    event = Event.query.get_or_404(event_id)
+    form = BookingForm()
     if form.validate_on_submit():
-        # Process form data here, e.g., save the event details in the database
-        flash('Event booked successfully!', 'success')
-        return redirect(url_for('main.booking_history'))  # Redirect to the booking history page or another page
+        booking = Booking(
+           user_id=current_user.id,
+            event_id=event.id,
+            name=form.name.data,
+            number_of_tickets=form.number_of_tickets.data)
+        db.session.add(booking)
+        db.session.commit()
+        return redirect(url_for('event.booking_history'))  # Redirect to the booking history page or another page
 
-    return render_template('book.html', form=form)
+    return render_template('book.html', form=form,event=event)
 
 @event_bp.route('/my_event', methods=['GET', 'POST'])
 @login_required
@@ -114,3 +120,12 @@ def my_events():
 
     # Pass these events to a template for rendering
     return render_template('my_events.html', events=user_events)
+
+@event_bp.route('/my_bookings', methods=['GET'])
+@login_required
+def booking_history():
+    # Query bookings made by the current user
+    user_bookings = Booking.query.filter_by(user_id=current_user.id).all()
+
+    # Pass these bookings to a template for rendering
+    return render_template('booking-history.html', bookings=user_bookings)

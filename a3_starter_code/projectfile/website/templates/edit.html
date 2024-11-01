@@ -24,12 +24,24 @@
                     <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
                 </li>
                 {% endif %}
+                
+                {% if current_user.is_authenticated %}
                 <li class="nav-item {% if request.endpoint == 'main.create_event' %}active{% endif %}">
                     <a class="nav-link" href="{{ url_for('event.create') }}">Create Event</a>
                 </li>
+
+
+                
+                <li class="nav-item {% if request.endpoint == 'main.book_event' %}active{% endif %}">
+                    <a class="nav-link" href="{{ url_for('event.my_events') }}">My Events</a></a>
+                </li>
+                
+                
                 <li class="nav-item {% if request.endpoint == 'main.booking_history' %}active{% endif %}">
                     <a class="nav-link" href="{{ url_for('main.booking_history') }}">Booking History</a>
                 </li>
+                {% endif %}
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Browse by Category
@@ -55,18 +67,7 @@
         </div>
     </nav>
 
-    <!-- Banner Section -->
-    <section class="jumbotron text-center bg-light">
-        <div class="container">
-            <h1 class="display-4">Discover Amazing Events</h1>
-            <p class="lead">Explore a wide range of events across different categories. Find your next adventure!</p>
-            <!-- Centered Search Bar -->
-            <form class="form-inline justify-content-center mt-4" method="GET" action="{{ url_for('main.search') }}">
-                <input class="form-control mr-sm-2" type="search" name="query" placeholder="Search events" aria-label="Search">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    </section>
+
 
 <section class="container my-5">
     <h2 class="text-center mb-4">Edit Event</h2>

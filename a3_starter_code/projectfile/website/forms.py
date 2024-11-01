@@ -47,3 +47,10 @@ class EditEventStatusForm(FlaskForm):
     status=SelectField('Status', choices=[('open', 'Open'), ('inactive', 'Inactive'), ('sold out', 'Sold Out'), ('cancelled', 'Cancelled')], validators=[InputRequired()])
     submit = SubmitField('Update ')
 
+class BookingForm(FlaskForm):
+    # You can add fields for additional booking details
+    name = StringField('Your Name', validators=[InputRequired()])
+    number_of_tickets = SelectField('Number of Tickets', 
+                                      choices=[(i, str(i)) for i in range(1, 5)],  # Dropdown from 1 to 10
+                                      validators=[InputRequired()])
+    submit = SubmitField('Book Now')

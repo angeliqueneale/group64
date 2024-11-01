@@ -1,26 +1,14 @@
+{% from "bootstrap/form.html" import render_form %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ category.capitalize() }} Events</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management - Home</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <style>
-        /* Ensure the footer is at the bottom */
-        html, body {
-            height: 100%;
-        }
-        body {
-            display: flex;
-            flex-direction: column;
-        }
-        .content {
-            flex: 1;
-        }
-    </style>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -36,17 +24,24 @@
                     <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
                 </li>
                 {% endif %}
+                
+                {% if current_user.is_authenticated %}
                 <li class="nav-item {% if request.endpoint == 'main.create_event' %}active{% endif %}">
                     <a class="nav-link" href="{{ url_for('event.create') }}">Create Event</a>
                 </li>
 
+
+                
                 <li class="nav-item {% if request.endpoint == 'main.book_event' %}active{% endif %}">
                     <a class="nav-link" href="{{ url_for('event.my_events') }}">My Events</a></a>
                 </li>
                 
+                
                 <li class="nav-item {% if request.endpoint == 'main.booking_history' %}active{% endif %}">
                     <a class="nav-link" href="{{ url_for('main.booking_history') }}">Booking History</a>
                 </li>
+                {% endif %}
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Browse by Category
@@ -71,6 +66,20 @@
             </ul>
         </div>
     </nav>
+
+    <!-- Banner Section -->
+    <section class="jumbotron text-center bg-light">
+        <div class="container">
+            <h1 class="display-4">Discover Amazing Events</h1>
+            <p class="lead">Explore a wide range of events across different categories. Find your next adventure!</p>
+            <!-- Centered Search Bar -->
+            <form class="form-inline justify-content-center mt-4" method="GET" action="{{ url_for('main.search') }}">
+                <input class="form-control mr-sm-2" type="search" name="query" placeholder="Search events" aria-label="Search">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </section>
+
     <!-- Category Events Section -->
     <section class="container my-5 content">
         <h2 class="text-center mb-4">{{ category.capitalize() }} Events</h2>
@@ -85,10 +94,7 @@
                             <p class="card-text">{{ event.description }}</p>
                             <a href="{{ url_for('event.show', id=event.id) }}" class="btn btn-primary">View Details</a>
                             
-                            <!-- Delete Button -->
-                            <form action="{{ url_for('main.delete_event', event_id=event.id) }}" method="post" style="display:inline;" onsubmit="return confirmDelete();">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
+                            
                         </div>
                     </div>
                 </div>
