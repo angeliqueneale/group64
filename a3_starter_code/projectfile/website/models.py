@@ -25,19 +25,6 @@ class Event(db.Model):
 	# string print method
     def __repr__(self):
         return f"<Event {self.name}, Category: {self.category}, Status: {self.status}, Owner ID: {self.owner_id}>"
-    
-class Comment(db.Model):
-    __tablename__ = 'comments'
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(400))
-    created_at = db.Column(db.DateTime, default=datetime.now())
-    # add the foreign keys
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
-
-    # string print method
-    def __repr__(self):
-        return f"Comment: {self.text}"
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -60,3 +47,17 @@ class User(db.Model, UserMixin):
     # Representation method for debugging
     def __repr__(self):
         return f'<User {self.username}>'
+       
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(400))
+    created_at = db.Column(db.DateTime, default=datetime.now())
+    # add the foreign keys
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
+
+    # string print method
+    def __repr__(self):
+        return f"Comment: {self.text}"
+
