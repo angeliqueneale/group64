@@ -41,7 +41,7 @@ def search():
     if query:
         # Use SQLAlchemy to filter events by title or description
         events = Event.query.filter(
-            (Event.title.ilike(f'%{query}%')) | (Event.description.ilike(f'%{query}%'))
+            (Event.name.ilike(f'%{query}%')) | (Event.description.ilike(f'%{query}%'))
         ).all()
     else:
         events = []

@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Management - Home</title>
+    <title>Event Management - Create Event</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="#">Event Management</a>
@@ -29,14 +29,9 @@
                 <li class="nav-item {% if request.endpoint == 'main.create_event' %}active{% endif %}">
                     <a class="nav-link" href="{{ url_for('event.create') }}">Create Event</a>
                 </li>
-
-
-                
                 <li class="nav-item {% if request.endpoint == 'main.book_event' %}active{% endif %}">
-                    <a class="nav-link" href="{{ url_for('event.my_events') }}">My Events</a></a>
+                    <a class="nav-link" href="{{ url_for('event.my_events') }}">My Events</a>
                 </li>
-                
-                
                 <li class="nav-item {% if request.endpoint == 'main.booking_history' %}active{% endif %}">
                     <a class="nav-link" href="{{ url_for('main.booking_history') }}">Booking History</a>
                 </li>
@@ -54,56 +49,56 @@
                     </div>
                 </li>
                
-                    {% if current_user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
-                    </li>
-                    {% endif %}
+                {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </nav>
 
+    <!-- Main Content -->
+    <main class="container my-5 flex-grow-1">
+        <h2 class="text-center mb-4">Create a New Event</h2>
+        <div class="col-md-6 mx-auto">
+            {{ render_form(form) }}
+        </div>
+        <!-- Back to Home Button -->
+        <div class="text-center mt-4">
+            <a href="{{ url_for('main.home') }}" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </main>
 
+    <!-- Footer -->
+    <footer class="bg-primary text-light py-4 text-center">
+        <p>© 2024 Event Management. All rights reserved.</p>
+    </footer>
 
-<section class="container my-5">
-    <h2 class="text-center mb-4">Create a New Event</h2>
-    <div class="col-md-6 mx-auto">
-        {{ render_form(form) }}
-    </div>
-    <!-- Back to Home Button -->
-    <div class="text-center mt-4">
-        <a href="{{ url_for('main.home') }}" class="btn btn-secondary">Back to Home</a>
-    </div>
-</section>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-    $(function() {
-        $('#date').datepicker({
-            dateFormat: 'yy-mm-dd'  // Format the date as needed
+    {% if request.args.get('message') %}
+    <script>
+        showNotification("{{ request.args.get('message') }}");
+    </script>
+    {% endif %}
+
+    <script>
+        $(function() {
+            $('#date').datepicker({
+                dateFormat: 'yy-mm-dd'  // Format the date as needed
+            });
         });
-    });
 
-    document.querySelector('form').addEventListener('submit', function(event) {
-        alert('Event created successfully!');
-    });
-</script>
-
- <!-- Footer -->
- <footer class="bg-primary text-light py-4 text-center">
-    <p>© 2024 Event Management. All rights reserved.</p>
-</footer>
-
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-{% if request.args.get('message') %}
-<script>
-    showNotification("{{ request.args.get('message') }}");
-</script>
-{% endif %}
+        document.querySelector('form').addEventListener('submit', function(event) {
+            alert('Event created successfully!');
+        });
+    </script>
 </body>
 </html>

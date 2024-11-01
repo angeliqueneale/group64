@@ -10,7 +10,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh; margin: 0;">
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="#">Event Management</a>
@@ -30,12 +30,9 @@
                     <a class="nav-link" href="{{ url_for('event.create') }}">Create Event</a>
                 </li>
 
-
-                
                 <li class="nav-item {% if request.endpoint == 'main.book_event' %}active{% endif %}">
                     <a class="nav-link" href="{{ url_for('event.my_events') }}">My Events</a></a>
                 </li>
-                
                 
                 <li class="nav-item {% if request.endpoint == 'main.booking_history' %}active{% endif %}">
                     <a class="nav-link" href="{{ url_for('main.booking_history') }}">Booking History</a>
@@ -81,7 +78,7 @@
     </section>
 
     <!-- Category Events Section -->
-    <section class="container my-5 content">
+    <main class="container my-5 flex-grow-1">
         <h2 class="text-center mb-4">{{ category.capitalize() }} Events</h2>
         <div class="row">
             {% for event in events %}
@@ -93,14 +90,12 @@
                             <h5 class="card-title">{{ event.name }}</h5>
                             <p class="card-text">{{ event.description }}</p>
                             <a href="{{ url_for('event.show', id=event.id) }}" class="btn btn-primary">View Details</a>
-                            
-                            
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
-    </section>
+    </main>
 
     <!-- Footer -->
     <footer class="bg-primary text-light py-4 text-center">
